@@ -1,5 +1,5 @@
 import React from 'react'
-import { browserHistory } from 'react-router'
+import marked from 'marked'
 
 import BlogActions from '../actions/BlogActions'
 import InterfaceActions from '../actions/InterfaceActions'
@@ -8,9 +8,9 @@ let _newPost = (e) => {
   e.preventDefault()
 
   let newPost = {
-    title: e.target.title.value.toString(),
-    author: e.target.author.value.toString(),
-    postBody: e.target.postBody.value.toString()
+    title: e.target.title.value,
+    author: e.target.author.value,
+    postBody: marked(e.target.postBody.value)
   }
 
   BlogActions.addBlogPost(newPost)

@@ -15,7 +15,10 @@ const BlogPostList = ({ blogposts }) => (
             <h4>{blogpost.title}</h4>
             <h6>{blogpost.author}</h6>
             <h5>{blogpost.date}</h5>
-            <div>{blogpost.postBody}</div>
+            <div dangerouslySetInnerHTML={() => {
+              let __html = blogpost.postBody
+              return __html
+            }}></div>
             <button className="btn btn-warning">Edit</button>
             <button className="btn btn-danger" onClick={() => { _deletePost(blogpost._id) }}>Delete</button>
           </div>

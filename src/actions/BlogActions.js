@@ -6,16 +6,20 @@ const BlogActions = {
     API.getAll()
   },
 
-  getChatroom (id) {
-    API.getChatroom(id)
+  getBlogPost (id) {
+    API.getBlogPost(id)
   },
 
-  addChatroom (newRoom) {
-    API.addChatroom(newRoom)
+  addBlogPost (newPost) {
+    API.addBlogPost(newPost)
   },
 
-  addMessage (id, newMessage) {
-    API.addMessage(id, newMessage)
+  updateBlogPost (id) {
+    API.updateBlogPost(id)
+  },
+
+  deleteBlogPost (id) {
+    API.deleteBlogPost(id)
   }
 }
 

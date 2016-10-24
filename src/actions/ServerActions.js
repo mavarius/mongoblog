@@ -13,6 +13,12 @@ const ServerActions = {
       type: 'RECEIVE_BLOGPOST',
       payload: data
     })
+  },
+
+  registerDelete () {
+    AppDispatcher.dispatch({
+      type: 'REGISTER_DELETE'
+    })
   }
 }
 

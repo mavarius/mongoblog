@@ -1,14 +1,25 @@
 import React from 'react'
-import { browserHistory } from 'react-router'
 
-const BlogPostList = ({ chatrooms }) => (
+import BlogActions from '../actions/BlogActions'
+
+let _deletePost = (id) => {
+  BlogActions.deleteBlogPost(id)
+}
+
+const BlogPostList = ({ blogposts }) => (
   <div>
-    {chatrooms.map(chatroom => {
+    {blogposts.map(blogpost => {
       return (
-        <button key={chatroom._id} onClick={() => browserHistory.push(`/${chatroom._id}`)}>
-          <h4>{chatroom.roomName}</h4>
-          <h6>{chatroom.description}</h6>
-        </button>
+        <div key={blogpost._id} className="row">
+          <div className="blogPost col-xs-12">
+            <h4>{blogpost.title}</h4>
+            <h6>{blogpost.author}</h6>
+            <h5>{blogpost.date}</h5>
+            <div>{blogpost.postBody}</div>
+            <button className="btn btn-warning">Edit</button>
+            <button className="btn btn-danger" onClick={() => { _deletePost(blogpost._id) }}>Delete</button>
+          </div>
+        </div>
       )
     })}
   </div>

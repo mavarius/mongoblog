@@ -1,60 +1,54 @@
-import React, { Component } from 'react'
-import moment from 'moment'
+import React from 'react'
+import { browserHistory } from 'react-router'
 
-import BlogStore from '../stores/BlogStore'
 import BlogActions from '../actions/BlogActions'
+import InterfaceActions from '../actions/InterfaceActions'
 
-import MessageList from './MessageList'
+let _newPost = (e) => {
+  e.preventDefault()
 
-export default class BlogPost extends Component {
-  constructor () {
-    super()
-
-    this.state = {
-      chatroom: BlogStore.getChatroom()
-    }
-
-    this._onChange = this._onChange.bind(this)
+  let newPost = {
+    title: e.target.title.value.toString(),
+    author: e.target.author.value.toString(),
+    postBody: e.target.postBody.value.toString()
   }
 
-  componentWillMount () {
-    BlogStore.on('CHANGE', this._onChange)
-    BlogActions.getChatroom(this.props.params.id)
-  }
-
-  componentWillUnmount () {
-    BlogStore.removeListener('CHANGE', this._onChange)
-  }
-
-  _onChange () {
-    this.setState({
-      chatroom: BlogStore.getChatroom()
-    })
-  }
-
-  _newMessage (e) {
-    e.preventDefault()
-
-    let newMessage = {
-      body: e.target.newMessage.value.toString(),
-      author: e.target.author.value.toString()
-    }
-
-    BlogActions.addMessage(this.props.params.id, newMessage)
-  }
-
-  render () {
-    console.log('this.state.chatroom: ', this.state.chatroom.messages)
-
-    return (
-      <div>
-        <MessageList {...this.state.chatroom} />
-        <form onSubmit={(e) => this._newMessage(e)}>
-          <input id="newMessage" type="text" placeholder="message" />
-          <input id="author" type="text" placeholder="author" />
-          <button type="submit">Send Message</button>
-        </form>
-      </div>
-    )
-  }
+  BlogActions.addBlogPost(newPost)
+  InterfaceActions.modalSwitch(false)
 }
+
+let cancelForm = (e) => {
+  InterfaceActions.modalSwitch(false)
+}
+
+const NewPost = () => (
+  <div className="row">
+    <form className="postForm" onSubmit={(e) => _newPost(e)}>
+      <div className="form-group row">
+        <label htmlFor="title" className="col-xs-2 col-form-label">Title:</label>
+        <div className="col-xs-10">
+          <input className="form-control" type="text" id="title" />
+        </div>
+      </div>
+
+      <div className="form-group row">
+        <label htmlFor="author" className="col-xs-2 col-form-label">author:</label>
+        <div className="col-xs-10">
+          <input className="form-control" type="text" id="author" />
+        </div>
+      </div>
+
+      <div className="form-group row">
+        <label htmlFor="postBody" className="col-xs-2 col-form-label">body:</label>
+        <div className="col-xs-10">
+          <textarea className="form-control" type="text" id="postBody" />
+        </div>
+      </div>
+
+      <button className="btn btn-success col-xs-6 col-md-2" type="submit">Post</button>
+    </form>
+    <button className="btn btn-default col-xs-6 col-md-2" onClick={() => cancelForm()}>cancel</button>
+  </div>
+)
+
+export default NewPost

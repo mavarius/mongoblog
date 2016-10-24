@@ -11,13 +11,20 @@ router.route('/:id')
   })
   .put((req, res) => {
     BlogPost.findByIdAndUpdate(req.params.id, req.body)
-    .then(blogposts => res.send(blogposts))
+    .then(
+      BlogPost.find({})
+      .then(blogposts => res.send(blogposts))
+      .catch(err => res.status(400).send(err))
+    )
     .catch(err => res.status(400).send(err))
   })
   .delete((req, res) => {
     BlogPost.findByIdAndRemove(req.params.id)
-      .then(BlogPost.find({}))
-      .then(blogposts => res.send(blogposts))
+      .then(
+        BlogPost.find({})
+        .then(blogposts => res.send(blogposts))
+        .catch(err => res.status(400).send(err))
+      )
       .catch(err => res.status(400).send(err))
   })
 
@@ -29,7 +36,11 @@ router.route('/')
   })
   .post((req, res) => {
     BlogPost.create(req.body)
-      .then(blogposts => res.send(blogposts))
+      .then(
+        BlogPost.find({})
+        .then(blogposts => res.send(blogposts))
+        .catch(err => res.status(400).send(err))
+      )
       .catch(err => res.status(400).send(err))
   })
 

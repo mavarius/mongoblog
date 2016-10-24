@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 
 import BlogStore from '../stores/BlogStore'
 import BlogActions from '../actions/BlogActions'
+import InterfaceActions from '../actions/InterfaceActions'
 
-import BlogPost from './BlogPost'
 import BlogPostList from './BlogPostList'
+
+import Modal from './Modal'
 
 export default class HomePage extends Component {
   constructor () {
@@ -18,12 +20,12 @@ export default class HomePage extends Component {
   }
 
   componentWillMount () {
-    BlogStore.on('CHANGE', this._onChange)
+    BlogStore.startListening(this._onChange)
     BlogActions.getAll()
   }
 
   componentWillUnmount () {
-    BlogStore.removeListener('CHANGE', this._onChange)
+    BlogStore.stopListening(this._onChange)
   }
 
   _onChange () {
@@ -32,36 +34,20 @@ export default class HomePage extends Component {
     })
   }
 
-  _addNewChatroom (e) {
-    e.preventDefault()
-
-    let newPost = {
-      newPost: e.target.newPost.value.toString(),
-      postBody: e.target.postBody.value.toString()
-    }
-
-    BlogActions.addChatroom(newPost)
-    BlogActions.getAll()
+  _openModal () {
+    const { section } = this.props
+    InterfaceActions.modalSwitch(true, section)
   }
 
   render () {
+    console.log('this.state.blogposts: ', this.state.blogposts)
     return (
       <div>
         <div className="row">
-          <form onSubmit={(e) => this._addNewChatroom(e)}>
-            <input id="newPost" type="text" placeholder="room name" />
-            <input id="postBody" type="text" placeholder="postBody" />
-            <button type="submit">Add New Chatroom</button>
-          </form>
+          <button to="/newpost" className="btn btn-info col-xs-12 col-sm-2" onClick={() => this._openModal()}>New Post</button>
         </div>
-
-        <div className="row">
-          <BlogPostList {...this.state} />
-        </div>
-
-        <div className="row">
-          {this.props.children}
-        </div>
+        <BlogPostList {...this.state} />
+        <Modal />
       </div>
     )
   }

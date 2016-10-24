@@ -19,8 +19,19 @@ class BlogStore extends EventEmitter {
           _currentPost = action.payload
           this.emit('CHANGE')
           break
+        case 'REGISTER_DELETE':
+          this.emit('CHANGE')
+          break
       }
     })
+  }
+
+  startListening (cb) {
+    this.on('CHANGE', cb)
+  }
+
+  stopListening (cb) {
+    this.removeListener('CHANGE', cb)
   }
 
   getAll () {
